@@ -1,0 +1,86 @@
+@startuml Review Service Component Diagram
+
+package "Interfaces / REST API" {
+  [ReviewController] as reviewController
+}
+
+package "Application Services" {
+  [ReviewCommandServiceImpl] as reviewCommandImpl
+  [ReviewQueryServiceImpl] as reviewQueryImpl
+}
+
+package "Domain Services" {
+  interface "ReviewCommandService" as reviewCommandService
+  interface "ReviewQueryService" as reviewQueryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Review] as reviewEntity
+  }
+
+  package "Commands" {
+    [CreateReviewCommand] as createReviewCmd
+    [UpdateReviewCommand] as updateReviewCmd
+    [DeleteReviewCommand] as deleteReviewCmd
+  }
+
+  package "Queries" {
+    [GetReviewByIdQuery] as getReviewByIdQuery
+    [GetAllReviewsQuery] as getAllReviewsQuery
+    [GetAllReviewsByMedicalAppointmentIdQuery] as getByAppointmentQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    [ReviewRepository] as reviewRepository
+  }
+
+  package "External Clients" {
+    [ExternalMedicalAppointment] as externalAppointment
+    [RestTemplateConfig] as restTemplateConfig
+  }
+
+  package "Transform" {
+    [ReviewResourceFromEntityAssembler] as reviewResourceAssembler
+    [CreateReviewCommandFromResourceAssembler] as createReviewAssembler
+    [UpdateReviewCommandFromResourceAssembler] as updateReviewAssembler
+  }
+}
+
+database "Review DB" as db
+
+' Relaciones internas
+reviewController --> reviewCommandImpl : invoca
+reviewController --> reviewQueryImpl : invoca
+
+reviewCommandImpl ..|> reviewCommandService : implementa
+reviewQueryImpl ..|> reviewQueryService : implementa
+
+reviewController ..> reviewResourceAssembler : usa
+reviewController ..> createReviewAssembler : usa
+reviewController ..> updateReviewAssembler : usa
+
+reviewCommandImpl --> reviewRepository : persiste datos
+reviewQueryImpl --> reviewRepository : consulta datos
+
+reviewRepository --> reviewEntity : gestiona
+
+reviewCommandImpl ..> createReviewCmd : maneja
+reviewCommandImpl ..> updateReviewCmd : maneja
+reviewCommandImpl ..> deleteReviewCmd : maneja
+
+reviewQueryImpl ..> getReviewByIdQuery : maneja
+reviewQueryImpl ..> getAllReviewsQuery : maneja
+reviewQueryImpl ..> getByAppointmentQuery : maneja
+
+' Relaciones externas
+reviewRepository --> db : lee/escribe
+reviewCommandImpl --> externalAppointment : verifica existencia
+externalAppointment --> restTemplateConfig : usa
+externalAppointment --> [Appointment Service] : consulta información
+
+[Registry Service] --> reviewController : descubre
+
+@enduml

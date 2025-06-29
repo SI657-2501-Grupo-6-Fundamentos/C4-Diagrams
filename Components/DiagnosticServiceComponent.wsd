@@ -1,0 +1,84 @@
+@startuml Diagnostic Service Component Diagram
+
+package "Interfaces / REST API" {
+  [DiagnosticController] as diagController
+}
+
+package "Application Services" {
+  [DiagnosticCommandServiceImpl] as diagCommandImpl
+  [DiagnosticQueryServiceImpl] as diagQueryImpl
+}
+
+package "Domain Services" {
+  interface "DiagnosticCommandService" as diagCommandService
+  interface "DiagnosticQueryService" as diagQueryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Diagnostic] as diagnosticEntity
+  }
+
+  package "Value Objects" {
+    [DiagnosticSpecialty] as diagSpecialty
+  }
+
+  package "Commands" {
+    [CreateDiagnosticCommand] as createDiagCmd
+    [UpdateDiagnosticCommand] as updateDiagCmd
+  }
+
+  package "Queries" {
+    [GetDiagnosticByIdQuery] as getDiagByIdQuery
+    [GetAllDiagnosticQuery] as getAllDiagQuery
+    [GetAllDiagnosticByDiagnosticSpecialtyQuery] as getBySpecialtyQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    interface "DiagnosticRepository" as diagRepository
+  }
+
+  package "Transformers/Assemblers" {
+    [DiagnosticResourceFromEntityAssembler] as diagResourceAssembler
+    [CreateDiagnosticCommandFromResourceAssembler] as createDiagAssembler
+    [UpdateDiagnosticCommandFromResourceAssembler] as updateDiagAssembler
+  }
+}
+
+database "Diagnostic DB" as db
+
+' External Services
+[Medical Record Service] as medRecordService
+[Registry Service] as registryService
+
+' Relaciones internas
+diagController --> diagCommandImpl : invoca
+diagController --> diagQueryImpl : invoca
+diagCommandImpl ..|> diagCommandService : implementa
+diagQueryImpl ..|> diagQueryService : implementa
+
+diagController ..> diagResourceAssembler : usa
+diagController ..> createDiagAssembler : usa
+diagController ..> updateDiagAssembler : usa
+
+diagCommandImpl --> diagRepository : persiste datos
+diagQueryImpl --> diagRepository : consulta datos
+
+diagRepository --> diagnosticEntity : gestiona
+diagnosticEntity --> diagSpecialty : usa como
+
+diagCommandImpl ..> createDiagCmd : maneja
+diagCommandImpl ..> updateDiagCmd : maneja
+
+diagQueryImpl ..> getDiagByIdQuery : maneja
+diagQueryImpl ..> getAllDiagQuery : maneja
+diagQueryImpl ..> getBySpecialtyQuery : maneja
+
+' Relaciones externas
+diagRepository --> db : lee/escribe
+registryService --> diagController : descubre
+medRecordService --> diagController : solicita diagnósticos
+
+@enduml

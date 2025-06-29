@@ -1,0 +1,20 @@
+**Context Diagram** (`context_diagram.puml`)
+```plantuml
+@startuml ContextDiagram "Pawfect Care System Context"
+
+!include <C4/C4_Deployment.puml>
+
+Person(client, "Client", "Pet owner using the system")
+Person(vet, "Veterinarian", "Veterinarian user")
+
+System(pawfect, "Pawfect Care", "Manages appointments, connects veterinarians, and provides access to pet medical history.")
+System_Ext(googleOAuth, "Google OAuth2", "Gmail API for authentication")
+System_Ext(aiAgent, "AI Agent", "Chat consultation service through integrated chatbot")
+
+Rel(client, pawfect, "Uses")
+Rel(vet, pawfect, "Uses")
+Rel(pawfect, googleOAuth, "Uses for authentication")
+Rel(pawfect, aiAgent, "Uses for chat consultation")
+
+@enduml
+``` 

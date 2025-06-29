@@ -1,0 +1,87 @@
+@startuml Veterinary Service Component Diagram
+
+package "Interfaces / REST API" {
+  [VeterinariansController] as controller
+}
+
+package "Application Services" {
+  [VeterinarianCommandServiceImpl] as commandImpl
+  [VeterinarianQueryServiceImpl] as queryImpl
+}
+
+package "Domain Services" {
+  interface "VeterinarianCommandService" as commandService
+  interface "VeterinarianQueryService" as queryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Veterinarian] as vetEntity
+  }
+  
+  package "Value Objects" {
+    [VeterinarianSpeciality] as speciality
+  }
+  
+  package "Commands" {
+    [CreateVeterinarianCommand] as createCmd
+    [UpdateVeterinarianCommand] as updateCmd
+    [UpdateVeterinarianAvailabilityCommand] as updateAvailCmd
+  }
+  
+  package "Queries" {
+    [GetVeterinariansByIdQuery] as getByIdQuery
+    [GetAllVeterinariansQuery] as getAllQuery
+    [GetAllVeterinariansBySpecialityQuery] as getBySpecialityQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    interface "VeterinarianRepository" as repository
+  }
+  
+  package "Transformers/Assemblers" {
+    [VeterinarianResourceFromEntityAssembler] as resourceAssembler
+    [CreateVeterinarianCommandFromResourceAssembler] as createAssembler
+    [UpdateVeterinarianCommandFromResourceAssembler] as updateAssembler
+    [UpdateVeterinarianAvailabilityCommandFromResourceAssembler] as availAssembler
+  }
+}
+
+database "Veterinary DB" as db
+
+' External Services
+[Schedule Service] as scheduleService
+[Registry Service] as registryService
+
+' Relaciones internas
+controller --> commandImpl : invoca
+controller --> queryImpl : invoca
+commandImpl ..|> commandService : implementa
+queryImpl ..|> queryService : implementa
+controller ..> resourceAssembler : usa
+controller ..> createAssembler : usa
+controller ..> updateAssembler : usa
+controller ..> availAssembler : usa
+
+commandImpl --> repository : persiste datos
+queryImpl --> repository : consulta datos
+
+repository --> vetEntity : gestiona
+vetEntity --> speciality : usa
+
+commandImpl ..> createCmd : maneja
+commandImpl ..> updateCmd : maneja
+commandImpl ..> updateAvailCmd : maneja
+
+queryImpl ..> getByIdQuery : maneja
+queryImpl ..> getAllQuery : maneja
+queryImpl ..> getBySpecialityQuery : maneja
+
+' Relaciones externas
+repository --> db : lee/escribe
+registryService --> controller : descubre
+scheduleService --> controller : consulta disponibilidad
+
+@enduml

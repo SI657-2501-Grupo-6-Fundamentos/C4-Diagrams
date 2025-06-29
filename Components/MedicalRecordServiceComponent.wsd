@@ -1,0 +1,101 @@
+@startuml Medical Record Service Component Diagram
+
+package "Interfaces / REST API" {
+  [MedicalRecordsController] as medicalRecordsController
+  [DiagnosticsMedicalRecordController] as diagnosticsMedicalRecordController
+}
+
+package "Application Services" {
+  [MedicalRecordCommandServiceImpl] as commandImpl
+  [MedicalRecordQueryServiceImpl] as queryImpl
+}
+
+package "External Services" {
+  [ExternalMedicalAppointment] as externalAppointment
+  [ExternalDiagnostic] as externalDiagnostic
+  [RestTemplateConfig] as restConfig
+}
+
+package "Domain Services" {
+  interface "MedicalRecordCommandService" as commandService
+  interface "MedicalRecordQueryService" as queryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [MedicalRecord] as medicalRecordEntity
+  }
+
+  package "Commands" {
+    [CreateMedicalRecordCommand] as createCmd
+    [UpdateMedicalRecordCommand] as updateCmd
+    [DeleteMedicalRecordCommand] as deleteCmd
+  }
+
+  package "Queries" {
+    [GetMedicalRecordByIdQuery] as getByIdQuery
+    [GetAllMedicalRecordsQuery] as getAllQuery
+    [GetAllMedicalRecordsByDiagnosticIdQuery] as getByDiagnosticQuery
+    [GetAllMedicalRecordsByMedicalAppointmentIdQuery] as getByAppointmentQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    [MedicalRecordRepository] as repository
+  }
+
+  package "Transformers/Assemblers" {
+    [MedicalRecordResourceFromEntityAssembler] as resourceAssembler
+    [CreateMedicalRecordCommandFromResourceAssembler] as createAssembler
+    [UpdateMedicalRecordCommandFromResourceAssembler] as updateAssembler
+  }
+}
+
+database "Medical Record DB" as db
+
+' External Services
+[Diagnostic Service] as diagnosticService
+[Appointment Service] as appointmentService
+[Registry Service] as registryService
+
+' Relaciones internas
+medicalRecordsController --> commandImpl : invoca
+medicalRecordsController --> queryImpl : invoca
+diagnosticsMedicalRecordController --> queryImpl : invoca
+
+commandImpl ..|> commandService : implementa
+queryImpl ..|> queryService : implementa
+
+commandImpl --> repository : persiste datos
+queryImpl --> repository : consulta datos
+
+medicalRecordsController ..> resourceAssembler : usa
+medicalRecordsController ..> createAssembler : usa
+medicalRecordsController ..> updateAssembler : usa
+diagnosticsMedicalRecordController ..> resourceAssembler : usa
+
+commandImpl --> externalDiagnostic : verifica existencia
+commandImpl --> externalAppointment : verifica existencia
+externalDiagnostic ..> restConfig : usa
+externalAppointment ..> restConfig : usa
+
+repository --> medicalRecordEntity : gestiona
+
+commandImpl ..> createCmd : maneja
+commandImpl ..> updateCmd : maneja
+commandImpl ..> deleteCmd : maneja
+
+queryImpl ..> getByIdQuery : maneja
+queryImpl ..> getAllQuery : maneja
+queryImpl ..> getByDiagnosticQuery : maneja
+queryImpl ..> getByAppointmentQuery : maneja
+
+' Relaciones externas
+repository --> db : lee/escribe
+registryService --> medicalRecordsController : descubre
+externalDiagnostic --> diagnosticService : consulta información
+externalAppointment --> appointmentService : consulta información
+diagnosticService --> diagnosticsMedicalRecordController : consulta registros médicos
+
+@enduml

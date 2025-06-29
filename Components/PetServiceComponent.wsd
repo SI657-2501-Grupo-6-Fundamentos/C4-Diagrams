@@ -1,0 +1,106 @@
+@startuml Pet Service Component Diagram
+
+package "Interfaces / REST API" {
+  [PetsController] as petsController
+  [OwnerPetsController] as ownerPetsController
+}
+
+package "Application Services" {
+  [PetCommandServiceImpl] as commandImpl
+  [PetQueryServiceImpl] as queryImpl
+}
+
+package "Domain Services" {
+  interface "PetCommandService" as commandService
+  interface "PetQueryService" as queryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Pet] as petEntity
+  }
+
+  package "Value Objects" {
+    [AnimalType] as animalType
+    [Breed] as breed
+    [PetGender] as petGender
+  }
+
+  package "Commands" {
+    [CreatePetCommand] as createCmd
+    [UpdatePetCommand] as updateCmd
+    [DeletePetCommand] as deleteCmd
+  }
+
+  package "Queries" {
+    [GetPetByIdQuery] as getByIdQuery
+    [GetAllPetsQuery] as getAllQuery
+    [GetAllPetsByOwnerIdQuery] as getByOwnerQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    interface "PetRepository" as repository
+  }
+
+  package "External Clients" {
+    [ExternalOwner] as externalOwner
+  }
+
+  package "Config" {
+    [RestTemplateConfig] as restConfig
+  }
+
+  package "Transformers/Assemblers" {
+    [PetResourceFromEntityAssembler] as resourceAssembler
+    [CreatePetCommandFromResourceAssembler] as createAssembler
+    [UpdatePetCommandFromResourceAssembler] as updateAssembler
+  }
+}
+
+database "Pet DB" as db
+
+' External Services
+[Pet Owner Service] as petOwnerService
+[Registry Service] as registryService
+
+' Relaciones internas
+petsController --> commandImpl : invoca
+petsController --> queryImpl : invoca
+ownerPetsController --> queryImpl : invoca métodos específicos por propietario
+
+commandImpl ..|> commandService : implementa
+queryImpl ..|> queryService : implementa
+
+commandImpl --> repository : persiste datos
+queryImpl --> repository : consulta datos
+
+petsController ..> resourceAssembler : usa
+petsController ..> createAssembler : usa
+petsController ..> updateAssembler : usa
+ownerPetsController ..> resourceAssembler : usa
+
+commandImpl --> externalOwner : verifica existencia
+externalOwner ..> restConfig : usa
+
+repository --> petEntity : gestiona
+petEntity --> animalType : usa como
+petEntity --> breed : usa como
+petEntity --> petGender : usa como
+
+commandImpl ..> createCmd : maneja
+commandImpl ..> updateCmd : maneja
+commandImpl ..> deleteCmd : maneja
+
+queryImpl ..> getByIdQuery : maneja
+queryImpl ..> getAllQuery : maneja
+queryImpl ..> getByOwnerQuery : maneja
+
+' Relaciones externas
+repository --> db : lee/escribe
+registryService --> petsController : descubre
+externalOwner --> petOwnerService : consulta información
+petOwnerService --> ownerPetsController : consulta mascotas por propietario
+
+@enduml

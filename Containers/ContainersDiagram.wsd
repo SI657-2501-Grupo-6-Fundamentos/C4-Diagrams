@@ -1,0 +1,74 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(client, "Client", "Pet owner using the web or mobile app")
+Person(vet,    "Veterinarian", "Veterinarian user")
+
+System_Ext(googleOAuth, "Google OAuth2", "Gmail API for authentication")
+System_Ext(aiAgent,     "AI Agent",   "Chat consultation service through integrated chatbot")
+
+Boundary(ss, "Pawfect Care") {
+  Container(lp,          "Landing Page",           "WebPage",      "Provides first contact and business benefits")
+  Container(wa,          "Web Application",        "WebPage",      "Frontend built with Angular")
+  Container(api,         "Gateway Service",        "Spring Cloud Gateway", "API routing")
+  Container(registry,    "Registry Service",       "Netflix Eureka",       "Service discovery")
+
+  Container(account,     "Account Service",        "Spring Boot + JWT",    "Manages user authentication and registration")
+  Container(appointment, "Appointment Service",    "Spring Boot",          "Manages appointments and tariffs")
+  Container(review,      "Review Service",         "Spring Boot",          "Handles reviews and ratings")
+  Container(pet,         "Pet Service",            "Spring Boot",          "Manages pet data")
+  Container(medical,     "Medical Record Service", "Spring Boot",          "Manages pet medical histories")
+  Container(diagnostic,  "Diagnostic Service",     "Spring Boot",          "Manages diagnoses and prescriptions")
+  Container(veterinary,  "Veterinary Service",     "Spring Boot",          "Manages veterinarian profiles and availability")
+  Container(schedule,    "Schedule Service",       "Spring Boot",          "Tracks vet schedules and availability")
+  Container(petOwner,    "Pet Owner Service",      "Spring Boot",          "Manages pet owner profiles")
+
+  ContainerDb(accountDb,      "Account DB",            "PostgreSQL", "Stores user accounts and roles")
+  ContainerDb(appointmentDb,  "Appointment DB",        "PostgreSQL", "Stores appointments and tariffs")
+  ContainerDb(reviewDb,       "Review DB",             "PostgreSQL", "Stores reviews and ratings")
+  ContainerDb(petDb,          "Pet DB",                "PostgreSQL", "Stores pet data")
+  ContainerDb(medicalDb,      "Medical Record DB",     "PostgreSQL", "Stores medical records")
+  ContainerDb(diagnosticDb,   "Diagnostic DB",         "PostgreSQL", "Stores diagnoses and prescriptions")
+  ContainerDb(veterinaryDb,   "Veterinary DB",         "PostgreSQL", "Stores veterinarian data")
+  ContainerDb(scheduleDb,     "Schedule DB",           "PostgreSQL", "Stores schedule data")
+  ContainerDb(petOwnerDb,     "Pet Owner DB",          "PostgreSQL", "Stores pet owner profiles")
+}
+
+
+Rel(client, lp,        "Visits")
+Rel(client, wa,        "Uses")
+Rel(vet,    wa,        "Uses")
+Rel(wa,     api,       "Uses")
+Rel(wa,     aiAgent,   "Uses for chat consultation", "REST/HTTPS")
+Rel(api,    registry,  "Uses for service discovery")
+Rel(account, googleOAuth, "Uses for authentication", "REST/HTTPS")
+
+Rel(registry, account,     "Discovers")
+Rel(registry, appointment, "Discovers")
+Rel(registry, review,      "Discovers")
+Rel(registry, pet,         "Discovers")
+Rel(registry, medical,     "Discovers")
+Rel(registry, diagnostic,  "Discovers")
+Rel(registry, veterinary,  "Discovers")
+Rel(registry, schedule,    "Discovers")
+Rel(registry, petOwner,    "Discovers")
+
+Rel(account,     accountDb,     "Reads from and writes to", "JDBC")
+Rel(appointment, appointmentDb, "Reads from and writes to", "JDBC")
+Rel(review,      reviewDb,      "Reads from and writes to", "JDBC")
+Rel(pet,         petDb,         "Reads from and writes to", "JDBC")
+Rel(medical,     medicalDb,     "Reads from and writes to", "JDBC")
+Rel(diagnostic,  diagnosticDb,  "Reads from and writes to", "JDBC")
+Rel(veterinary,  veterinaryDb,  "Reads from and writes to", "JDBC")
+Rel(schedule,    scheduleDb,    "Reads from and writes to", "JDBC")
+Rel(petOwner,    petOwnerDb,    "Reads from and writes to", "JDBC")
+
+Rel(appointment, pet,         "Calls for pet info",        "REST/HTTPS")
+Rel(appointment, veterinary,  "Calls for availability",    "REST/HTTPS")
+Rel(appointment, review,      "Creates reviews",           "REST/HTTPS")
+Rel(appointment, medical,     "Creates medical records",   "REST/HTTPS")
+Rel(medical,     diagnostic,  "Requests diagnostic info",  "REST/HTTPS")
+Rel(diagnostic,  medical,     "Supplies diagnostic context","REST/HTTPS")
+Rel(schedule,    veterinary,  "Calls for availability",    "REST/HTTPS")
+Rel(petOwner,    pet,         "Calls for pet info",        "REST/HTTPS")
+@enduml

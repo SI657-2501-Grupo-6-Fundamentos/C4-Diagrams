@@ -1,0 +1,99 @@
+@startuml Schedule Service Component Diagram
+
+package "Interfaces / REST API" {
+  [ScheduleController] as scheduleController
+  [VeterinarianScheduleController] as vetScheduleController
+}
+
+package "Application Services" {
+  [ScheduleCommandServiceImpl] as commandServiceImpl
+  [ScheduleQueryServiceImpl] as queryServiceImpl
+  [ExternalVeterinarian] as externalVet
+}
+
+package "Domain Services" {
+  interface "ScheduleCommandService" as commandService
+  interface "ScheduleQueryService" as queryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Schedule] as scheduleEntity
+  }
+
+  package "Value Objects" {
+    [AvailableDays] as availableDays
+  }
+
+  package "Commands" {
+    [CreateScheduleCommand] as createCmd
+    [UpdateScheduleCommand] as updateCmd
+    [DeleteScheduleCommand] as deleteCmd
+  }
+
+  package "Queries" {
+    [GetScheduleByIdQuery] as getByIdQuery
+    [GetAllSchedulesQuery] as getAllQuery
+    [GetAllSchedulesByVeterinarianIdQuery] as getByVetIdQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    interface "ScheduleRepository" as repository
+  }
+
+  package "Transformers/Assemblers" {
+    [ScheduleResourceFromEntityAssembler] as resourceAssembler
+    [CreateScheduleCommandFromResourceAssembler] as createAssembler
+    [UpdateScheduleCommandFromResourceAssembler] as updateAssembler
+  }
+  
+  package "Config" {
+    [RestTemplateConfig] as restConfig
+  }
+}
+
+database "Schedule DB" as db
+
+' External Services
+[Veterinary Service] as veterinaryService
+[Registry Service] as registryService
+
+' Relaciones internas
+scheduleController --> commandServiceImpl : invoca
+scheduleController --> queryServiceImpl : invoca
+vetScheduleController --> queryServiceImpl : invoca
+
+commandServiceImpl ..|> commandService : implementa
+queryServiceImpl ..|> queryService : implementa
+
+scheduleController ..> resourceAssembler : usa
+scheduleController ..> createAssembler : usa
+scheduleController ..> updateAssembler : usa
+vetScheduleController ..> resourceAssembler : usa
+
+commandServiceImpl --> repository : persiste datos
+queryServiceImpl --> repository : consulta datos
+commandServiceImpl --> externalVet : comunica con
+
+externalVet ..> restConfig : usa
+externalVet --> veterinaryService : actualiza disponibilidad
+
+repository --> scheduleEntity : gestiona
+scheduleEntity --> availableDays : usa como
+
+commandServiceImpl ..> createCmd : maneja
+commandServiceImpl ..> updateCmd : maneja
+commandServiceImpl ..> deleteCmd : maneja
+
+queryServiceImpl ..> getByIdQuery : maneja
+queryServiceImpl ..> getAllQuery : maneja
+queryServiceImpl ..> getByVetIdQuery : maneja
+
+' Relaciones externas
+repository --> db : lee/escribe
+registryService --> scheduleController : descubre
+externalVet --> veterinaryService : consulta disponibilidad
+
+@enduml

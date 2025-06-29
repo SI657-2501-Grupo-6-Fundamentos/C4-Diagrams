@@ -1,0 +1,78 @@
+@startuml Pet Owner Service Component Diagram
+
+package "Interfaces / REST API" {
+  [PetOwnersController] as controller
+}
+
+package "Application Services" {
+  [PetOwnerCommandServiceImpl] as commandImpl
+  [PetOwnerQueryServiceImpl] as queryImpl
+}
+
+package "Domain Services" {
+  interface "PetOwnerCommandService" as commandService
+  interface "PetOwnerQueryService" as queryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [PetOwner] as petOwnerEntity
+  }
+
+  package "Commands" {
+    [CreatePetOwnerCommand] as createCmd
+    [UpdatePetOwnerCommand] as updateCmd
+  }
+
+  package "Queries" {
+    [GetPetOwnerByIdQuery] as getByIdQuery
+    [GetAllPetOwnersQuery] as getAllQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    interface "PetOwnerRepository" as repository
+  }
+
+  package "Transformers/Assemblers" {
+    [PetOwnerResourceFromEntityAssembler] as resourceAssembler
+    [CreatePetOwnerCommandFromResourceAssembler] as createAssembler
+    [UpdatePetOwnerCommandFromResourceAssembler] as updateAssembler
+  }
+}
+
+database "Pet Owner DB" as db
+
+' External Services
+[Pet Service] as petService
+[Registry Service] as registryService
+
+' Relaciones internas
+controller --> commandImpl : invoca
+controller --> queryImpl : invoca
+
+commandImpl ..|> commandService : implementa
+queryImpl ..|> queryService : implementa
+
+controller ..> resourceAssembler : usa
+controller ..> createAssembler : usa
+controller ..> updateAssembler : usa
+
+commandImpl --> repository : persiste datos
+queryImpl --> repository : consulta datos
+
+repository --> petOwnerEntity : gestiona
+
+commandImpl ..> createCmd : maneja
+commandImpl ..> updateCmd : maneja
+
+queryImpl ..> getByIdQuery : maneja
+queryImpl ..> getAllQuery : maneja
+
+' Relaciones externas
+repository --> db : lee/escribe
+registryService --> controller : descubre
+petService --> controller : consulta información
+
+@enduml

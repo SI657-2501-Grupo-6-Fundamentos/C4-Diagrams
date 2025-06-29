@@ -1,0 +1,143 @@
+@startuml Appointment Service Component Diagram
+
+package "Interfaces / REST API" {
+  [AppointmentController] as appointmentController
+  [TariffController] as tariffController
+}
+
+package "Application Services" {
+  [AppointmentCommandServiceImpl] as appointmentCommandImpl
+  [AppointmentQueryServiceImpl] as appointmentQueryImpl
+  [TariffCommandServiceImpl] as tariffCommandImpl
+  [TariffQueryServiceImpl] as tariffQueryImpl
+}
+
+package "External Services" {
+  [ExternalPet] as externalPet
+  [ExternalVeterinarian] as externalVeterinarian
+  [RestTemplateConfig] as restConfig
+}
+
+package "Domain Services" {
+  interface "AppointmentCommandService" as appointmentCommandService
+  interface "AppointmentQueryService" as appointmentQueryService
+  interface "TariffCommandService" as tariffCommandService
+  interface "TariffQueryService" as tariffQueryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [Appointment] as appointmentAggregate
+    [Tariff] as tariffAggregate
+  }
+
+  package "Value Objects" {
+    [AppointmentStatus] as appointmentStatus
+    [ServiceName] as serviceName
+  }
+
+  package "Commands" {
+    [CreateAppointmentCommand] as createAppointmentCmd
+    [UpdateAppointmentCommand] as updateAppointmentCmd
+    [CreateTariffCommand] as createTariffCmd
+    [UpdateTariffCommand] as updateTariffCmd
+  }
+
+  package "Queries" {
+    [GetAllAppointmentsQuery] as getAllAppointmentsQuery
+    [GetAppointmentByIdQuery] as getAppointmentByIdQuery
+    [GetAllAppointmentsByPetIdQuery] as getByPetIdQuery
+    [GetAllAppointmentsByVeterinarianIdQuery] as getByVeterinarianIdQuery
+    [GetAllTariffsQuery] as getAllTariffsQuery
+    [GetTariffByIdQuery] as getTariffByIdQuery
+    [GetTariffByServiceNameQuery] as getByServiceNameQuery
+    [GetTariffByCostBetweenQuery] as getByCostBetweenQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Repositories" {
+    [AppointmentRepository] as appointmentRepository
+    [TariffRepository] as tariffRepository
+  }
+
+  package "Transformers/Assemblers" {
+    [AppointmentResourceAssembler] as appointmentResourceAssembler
+    [CreateAppointmentAssembler] as createAppointmentAssembler
+    [UpdateAppointmentAssembler] as updateAppointmentAssembler
+    [TariffResourceAssembler] as tariffResourceAssembler
+    [CreateTariffAssembler] as createTariffAssembler
+    [UpdateTariffAssembler] as updateTariffAssembler
+  }
+}
+
+database "Appointment DB" as db
+
+' External Services
+[Pet Service] as petService
+[Veterinary Service] as veterinaryService
+[Medical Record Service] as medicalRecordService
+[Registry Service] as registryService
+
+' Relaciones internas - Appointment
+appointmentController --> appointmentCommandImpl : invoca
+appointmentController --> appointmentQueryImpl : invoca
+appointmentCommandImpl ..|> appointmentCommandService : implementa
+appointmentQueryImpl ..|> appointmentQueryService : implementa
+
+appointmentCommandImpl --> appointmentRepository : persiste datos
+appointmentQueryImpl --> appointmentRepository : consulta datos
+
+appointmentController ..> appointmentResourceAssembler : usa
+appointmentController ..> createAppointmentAssembler : usa
+appointmentController ..> updateAppointmentAssembler : usa
+
+appointmentCommandImpl --> externalPet : verifica existencia
+appointmentCommandImpl --> externalVeterinarian : verifica disponibilidad
+externalPet ..> restConfig : usa
+externalVeterinarian ..> restConfig : usa
+
+' Relaciones internas - Tariff
+tariffController --> tariffCommandImpl : invoca
+tariffController --> tariffQueryImpl : invoca
+tariffCommandImpl ..|> tariffCommandService : implementa
+tariffQueryImpl ..|> tariffQueryService : implementa
+
+tariffCommandImpl --> tariffRepository : persiste datos
+tariffQueryImpl --> tariffRepository : consulta datos
+
+tariffController ..> tariffResourceAssembler : usa
+tariffController ..> createTariffAssembler : usa
+tariffController ..> updateTariffAssembler : usa
+
+' Relaciones domain model
+appointmentAggregate --> appointmentStatus : usa
+tariffAggregate --> serviceName : usa
+
+appointmentCommandImpl ..> createAppointmentCmd : maneja
+appointmentCommandImpl ..> updateAppointmentCmd : maneja
+appointmentQueryImpl ..> getAllAppointmentsQuery : maneja
+appointmentQueryImpl ..> getAppointmentByIdQuery : maneja
+appointmentQueryImpl ..> getByPetIdQuery : maneja
+appointmentQueryImpl ..> getByVeterinarianIdQuery : maneja
+
+tariffCommandImpl ..> createTariffCmd : maneja
+tariffCommandImpl ..> updateTariffCmd : maneja
+tariffQueryImpl ..> getAllTariffsQuery : maneja
+tariffQueryImpl ..> getTariffByIdQuery : maneja
+tariffQueryImpl ..> getByServiceNameQuery : maneja
+tariffQueryImpl ..> getByCostBetweenQuery : maneja
+
+' Relaciones externas
+registryService --> appointmentController : descubre
+registryService --> tariffController : descubre
+
+appointmentRepository --> db : lee/escribe
+tariffRepository --> db : lee/escribe
+
+externalPet --> petService : consulta mascotas
+externalVeterinarian --> veterinaryService : consulta disponibilidad
+
+appointmentController --> medicalRecordService : crea registros médicos
+
+@enduml

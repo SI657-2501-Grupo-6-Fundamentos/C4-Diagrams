@@ -1,0 +1,114 @@
+@startuml Account Service Component Diagram
+
+package "Interfaces / REST API" {
+  [AuthenticationController] as authController
+  [GoogleAuthenticationController] as googleAuthController
+  [RolesController] as rolesController
+  [UsersAdminController] as usersController
+}
+
+package "Application Services" {
+  [RoleCommandServiceImpl] as roleCommandImpl
+  [UserAdminCommandServiceImpl] as userCommandImpl
+  [RoleQueryServiceImpl] as roleQueryImpl
+  [UserAdminQueryServiceImpl] as userQueryImpl
+  [ApplicationReadyEventHandler] as eventHandler
+}
+
+package "Domain Services" {
+  interface "RoleCommandService" as roleCommandService
+  interface "UserAdminCommandService" as userCommandService
+  interface "RoleQueryService" as roleQueryService
+  interface "UserAdminQueryService" as userQueryService
+}
+
+package "Domain Model" {
+  package "Aggregates" {
+    [UserAdmin] as userAdmin
+  }
+  
+  package "Entities" {
+    [Role] as role
+  }
+  
+  package "Commands" {
+    [GoogleCallbackCommand] as googleCallbackCmd
+    [GoogleSignInCommand] as googleSignInCmd
+    [SeedRolesCommand] as seedRolesCmd
+    [SignInCommand] as signInCmd
+    [SignUpCommand] as signUpCmd
+  }
+  
+  package "Queries" {
+    [GetAllRolesQuery] as getAllRolesQuery
+    [GetAllUsersAdminQuery] as getAllUsersQuery
+    [GetRoleByNameQuery] as getRoleByNameQuery
+    [GetUserAdminByIdQuery] as getUserByIdQuery
+  }
+}
+
+package "Infrastructure" {
+  package "Authorization" {
+    [SecurityConfig] as securityConfig
+  }
+  
+  package "Hashing" {
+    [BCryptPasswordEncoder] as bcrypt
+  }
+  
+  package "OAuth" {
+    [GoogleOAuthClient] as googleOAuth
+  }
+  
+  package "Tokens" {
+    [JwtProvider] as jwtProvider
+  }
+  
+  package "Persistence" {
+    [RoleRepository] as roleRepository
+    [UserAdminRepository] as userRepository
+  }
+}
+
+database "Account DB" as db
+
+' External Systems
+[Google OAuth2] as externalGoogle
+
+' Relaciones internas
+authController --> userCommandImpl : invoca
+authController --> userQueryImpl : invoca
+googleAuthController --> userCommandImpl : invoca
+rolesController --> roleCommandImpl : invoca
+rolesController --> roleQueryImpl : invoca
+usersController --> userCommandImpl : invoca
+usersController --> userQueryImpl : invoca
+
+roleCommandImpl ..|> roleCommandService : implementa
+userCommandImpl ..|> userCommandService : implementa
+roleQueryImpl ..|> roleQueryService : implementa
+userQueryImpl ..|> userQueryService : implementa
+
+eventHandler --> roleCommandImpl : inicializa roles
+
+userCommandImpl --> userRepository : persiste datos
+userQueryImpl --> userRepository : consulta datos
+roleCommandImpl --> roleRepository : persiste datos
+roleQueryImpl --> roleRepository : consulta datos
+
+userCommandImpl --> bcrypt : cifra contraseñas
+userCommandImpl --> jwtProvider : genera tokens
+authController --> jwtProvider : valida tokens
+
+googleAuthController --> googleOAuth : autentica con
+
+' Relaciones externas
+userRepository --> db : lee/escribe
+roleRepository --> db : lee/escribe
+googleOAuth --> externalGoogle : utiliza API de
+[Registry Service] --> authController : descubre
+[Registry Service] --> googleAuthController : descubre
+[Registry Service] --> rolesController : descubre
+[Registry Service] --> usersController : descubre
+
+@enduml
