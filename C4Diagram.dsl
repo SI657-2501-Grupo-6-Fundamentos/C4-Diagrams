@@ -1,4 +1,4 @@
-workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
+workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"{
 
     !identifiers hierarchical
 
@@ -13,7 +13,7 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
         }
         ss = softwareSystem "Pawfect Care" "Manages appointments, connects veterinarians, and provides access to a pet's medical history." {
             //Landing Page
-            lp = container "Landing Page" "Website that provides a first contact and benefits of the business" "" "WebPage"
+            lp = container "Landing Page" "Website that provides a first contact and benefits of the business" "HTML & CSS" "WebPage"
             //Web Application
             wa = container "Web Application" "Frontend" "HTML, TS, CSS, Angular" "WebPage"
             //Api Gateway
@@ -27,8 +27,8 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
             //MS: Account Service
             account_service = container "Account Service" "Manages user authentication and registration" "Spring Boot + JWT" {
                 tags "MS"
-                authentication_controller             = component "AuthenticationController"               "Handles sign‑in and sign‑up requests"                     "Spring Boot"
-                google_authentication_controller      = component "GoogleAuthenticationController"        "Handles OAuth2 sign‑in with Google"                       "Spring Boot"
+                authentication_controller             = component "AuthenticationController"               "Handles sign in and sign up requests"                     "Spring Boot"
+                google_authentication_controller      = component "GoogleAuthenticationController"        "Handles OAuth2 sign in with Google"                       "Spring Boot"
                 roles_controller                      = component "RolesController"                       "Manages role creation and lookup"                         "Spring Boot"
                 users_admin_controller                = component "UsersAdminController"                  "Manages administrative user accounts"                     "Spring Boot"
                 role_command_service_impl             = component "RoleCommandServiceImpl"                 "Implements RoleCommandService"                          "Spring Boot"
@@ -37,9 +37,9 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
                 user_admin_query_service_impl         = component "UserAdminQueryServiceImpl"              "Implements UserAdminQueryService"                      "Spring Boot"
                 application_ready_event_handler       = component "ApplicationReadyEventHandler"           "Initializes default roles on startup"                  "Spring Boot"
                 role_command_service                  = component "RoleCommandService"                     "Defines role command operations"                     "Spring Boot"
-                user_admin_command_service            = component "UserAdminCommandService"                "Defines user‑admin command operations"               "Spring Boot"
+                user_admin_command_service            = component "UserAdminCommandService"                "Defines user admin command operations"               "Spring Boot"
                 role_query_service                    = component "RoleQueryService"                       "Defines role query operations"                       "Spring Boot"
-                user_admin_query_service              = component "UserAdminQueryService"                  "Defines user‑admin query operations"                 "Spring Boot"
+                user_admin_query_service              = component "UserAdminQueryService"                  "Defines user admin query operations"                 "Spring Boot"
                 security_config                       = component "SecurityConfig"                         "Configures authentication/authorization rules"             "Spring Security Configuration"
                 bcrypt_password_encoder               = component "BCryptPasswordEncoder"                  "Hashes and verifies user passwords"                    "Spring Boot"
                 google_oauth_client                   = component "GoogleOAuthClient"                      "Handles Google OAuth2 flows"                           "Spring Boot"
@@ -107,7 +107,7 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
             
             pet_owner_command_service = component "PetOwnerCommandService" "Defines command operations" "Spring Boot"
             pet_owner_query_service = component "PetOwnerQueryService" "Defines query operations" "Spring Boot"
-            pet_owner_repository = component "PetOwnerRepository" "Persists and retrieves PetOwner entities" "Spring Boot "
+            pet_owner_repository = component "PetOwnerRepository" "Persists and retrieves PetOwner entities" "Spring Boot"
             
             resource_assembler = component "PetOwnerResourceFromEntityAssembler" "Converts Entity → DTO" "Spring Boot"
             create_assembler = component "CreatePetOwnerCommandFromResourceAssembler" "Converts DTO → CreateCommand" "Spring Boot"
@@ -199,8 +199,8 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
                 diagnostic_query_service = component "DiagnosticQueryService" "Defines query operations" "Spring Boot"
                 diagnostic_repository = component "DiagnosticRepository" "Persists and retrieves Diagnostic entities" "Spring Boot"
                 resource_assembler = component "DiagnosticResourceFromEntityAssembler" "Converts Entity → DTO" "Spring Boot"
-                create_assembler = component "CreateDiagnosticCommandFromResourceAssembler" "Converts DTO → CreateDiagnosticComma "Spring Boot"
-                update_assembler = component "UpdateDiagnosticCommandFromResourceAssembler" "Converts DTO → UpdateDiagnosticComma "Spring Boot"
+                create_assembler = component "CreateDiagnosticCommandFromResourceAssembler" "Converts DTO → CreateDiagnosticCommand" "Spring Boot"
+                update_assembler = component "UpdateDiagnosticCommandFromResourceAssembler" "Converts DTO → UpdateDiagnosticCommand" "Spring Boot"
             }
             diagnostic_db = container "Diagnostic DB" "PostgreSQL database for diagnostic service" "PostgreSQL" {
                 tags "Database"
@@ -211,8 +211,8 @@ workspace "Pawfect Care Model" "C4 Architecture Model Of Pawfect Care"
                 review_controller = component "ReviewController" "REST controller for reviews" "Spring Boot"
                 review_command_service_impl = component "ReviewCommandServiceImpl" "Implements ReviewCommandService" "Spring Boot"
                 review_query_service_impl = component "ReviewQueryServiceImpl" "Implements ReviewQueryService" "Spring Boot"
-                review_command_service = component "ReviewCommandService" "Defines command operations" "Spring Boot 
-                review_query_service = component "ReviewQueryService" "Defines query operations" "Spring Boot 
+                review_command_service = component "ReviewCommandService" "Defines command operations" "Spring Boot"
+                review_query_service = component "ReviewQueryService" "Defines query operations" "Spring Boot"
                 review_repository = component "ReviewRepository" "Persists and retrieves Review entities" "Spring Boot" 
                 external_appointment = component "ExternalMedicalAppointment" "Adapter for Appointment Service existence checks" "Spring Boot"
                 rest_template_config = component "RestTemplateConfig" "Configures RestTemplate for external calls" "Spring Boot" 
