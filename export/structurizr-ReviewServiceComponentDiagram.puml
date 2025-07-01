@@ -1,0 +1,154 @@
+@startuml
+set separator none
+title Pawfect Care - Review Service - Components
+
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam rectangle<<PawfectCare.AppointmentService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.CreateReviewCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ExternalMedicalAppointment>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.RestTemplateConfig>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.ReviewDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.ReviewResourceFromEntityAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService.UpdateReviewCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService>> {
+  BorderColor #177b2c
+  FontColor #177b2c
+  shadowing false
+}
+
+rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+rectangle "==Appointment Service\n<size:10>[Container: Spring Boot]</size>\n\nManages scheduling and tracking of appointments" <<PawfectCare.AppointmentService>> as PawfectCare.AppointmentService
+database "==Review DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for review service" <<PawfectCare.ReviewDB>> as PawfectCare.ReviewDB
+
+rectangle "Review Service\n<size:10>[Container: Spring Boot]</size>" <<PawfectCare.ReviewService>> {
+  rectangle "==ReviewController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for reviews" <<PawfectCare.ReviewService.ReviewController>> as PawfectCare.ReviewService.ReviewController
+  rectangle "==ReviewCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements ReviewCommandService" <<PawfectCare.ReviewService.ReviewCommandServiceImpl>> as PawfectCare.ReviewService.ReviewCommandServiceImpl
+  rectangle "==ReviewQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements ReviewQueryService" <<PawfectCare.ReviewService.ReviewQueryServiceImpl>> as PawfectCare.ReviewService.ReviewQueryServiceImpl
+  rectangle "==ReviewCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines command operations" <<PawfectCare.ReviewService.ReviewCommandService>> as PawfectCare.ReviewService.ReviewCommandService
+  rectangle "==ReviewQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines query operations" <<PawfectCare.ReviewService.ReviewQueryService>> as PawfectCare.ReviewService.ReviewQueryService
+  rectangle "==ReviewRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves Review entities" <<PawfectCare.ReviewService.ReviewRepository>> as PawfectCare.ReviewService.ReviewRepository
+  rectangle "==ExternalMedicalAppointment\n<size:10>[Component: Spring Boot]</size>\n\nAdapter for Appointment Service existence checks" <<PawfectCare.ReviewService.ExternalMedicalAppointment>> as PawfectCare.ReviewService.ExternalMedicalAppointment
+  rectangle "==RestTemplateConfig\n<size:10>[Component: Spring Boot]</size>\n\nConfigures RestTemplate for external calls" <<PawfectCare.ReviewService.RestTemplateConfig>> as PawfectCare.ReviewService.RestTemplateConfig
+  rectangle "==ReviewResourceFromEntityAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts Entity → DTO" <<PawfectCare.ReviewService.ReviewResourceFromEntityAssembler>> as PawfectCare.ReviewService.ReviewResourceFromEntityAssembler
+  rectangle "==CreateReviewCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → CreateReviewCommand" <<PawfectCare.ReviewService.CreateReviewCommandFromResourceAssembler>> as PawfectCare.ReviewService.CreateReviewCommandFromResourceAssembler
+  rectangle "==UpdateReviewCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → UpdateReviewCommand" <<PawfectCare.ReviewService.UpdateReviewCommandFromResourceAssembler>> as PawfectCare.ReviewService.UpdateReviewCommandFromResourceAssembler
+}
+
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>Uses"
+PawfectCare.ReviewService.ReviewController .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.ReviewService.ReviewController .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.ReviewService.ReviewCommandServiceImpl .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewCommandService : "<color:#707070>implements"
+PawfectCare.ReviewService.ReviewQueryServiceImpl .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewQueryService : "<color:#707070>implements"
+PawfectCare.ReviewService.ReviewCommandServiceImpl .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewRepository : "<color:#707070>persists data to"
+PawfectCare.ReviewService.ReviewQueryServiceImpl .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewRepository : "<color:#707070>queries data from"
+PawfectCare.ReviewService.ReviewController .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewResourceFromEntityAssembler : "<color:#707070>uses"
+PawfectCare.ReviewService.ReviewController .[#707070,thickness=2].> PawfectCare.ReviewService.CreateReviewCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.ReviewService.ReviewController .[#707070,thickness=2].> PawfectCare.ReviewService.UpdateReviewCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.ReviewService.ReviewCommandServiceImpl .[#707070,thickness=2].> PawfectCare.ReviewService.ExternalMedicalAppointment : "<color:#707070>verifies existence"
+PawfectCare.ReviewService.ExternalMedicalAppointment .[#707070,thickness=2].> PawfectCare.ReviewService.RestTemplateConfig : "<color:#707070>uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.ReviewService.ReviewController : "<color:#707070>discovers"
+PawfectCare.ReviewService.ReviewRepository .[#707070,thickness=2].> PawfectCare.ReviewDB : "<color:#707070>reads from and writes to"
+PawfectCare.ReviewService.ExternalMedicalAppointment .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>calls for information"
+@enduml

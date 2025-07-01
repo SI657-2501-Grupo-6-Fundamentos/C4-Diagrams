@@ -1,0 +1,136 @@
+@startuml
+set separator none
+title Pawfect Care - Pet Owner Service - Components
+
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam rectangle<<PawfectCare.PetOwnerService.CreatePetOwnerCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.PetOwnerDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnerResourceFromEntityAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.PetOwnersController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService.UpdatePetOwnerCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService>> {
+  BorderColor #177b2c
+  FontColor #177b2c
+  shadowing false
+}
+
+rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+database "==Pet Owner DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for pet owner service" <<PawfectCare.PetOwnerDB>> as PawfectCare.PetOwnerDB
+rectangle "==Pet Service\n<size:10>[Container: Spring Boot]</size>\n\nStores and manages pet data (breed, age, etc.)" <<PawfectCare.PetService>> as PawfectCare.PetService
+
+rectangle "Pet Owner Service\n<size:10>[Container: Spring Boot]</size>" <<PawfectCare.PetOwnerService>> {
+  rectangle "==PetOwnersController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for pet owners" <<PawfectCare.PetOwnerService.PetOwnersController>> as PawfectCare.PetOwnerService.PetOwnersController
+  rectangle "==PetOwnerCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements PetOwnerCommandService" <<PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl>> as PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl
+  rectangle "==PetOwnerQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements PetOwnerQueryService" <<PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl>> as PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl
+  rectangle "==PetOwnerCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines command operations" <<PawfectCare.PetOwnerService.PetOwnerCommandService>> as PawfectCare.PetOwnerService.PetOwnerCommandService
+  rectangle "==PetOwnerQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines query operations" <<PawfectCare.PetOwnerService.PetOwnerQueryService>> as PawfectCare.PetOwnerService.PetOwnerQueryService
+  rectangle "==PetOwnerRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves PetOwner entities" <<PawfectCare.PetOwnerService.PetOwnerRepository>> as PawfectCare.PetOwnerService.PetOwnerRepository
+  rectangle "==PetOwnerResourceFromEntityAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts Entity → DTO" <<PawfectCare.PetOwnerService.PetOwnerResourceFromEntityAssembler>> as PawfectCare.PetOwnerService.PetOwnerResourceFromEntityAssembler
+  rectangle "==CreatePetOwnerCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → CreateCommand" <<PawfectCare.PetOwnerService.CreatePetOwnerCommandFromResourceAssembler>> as PawfectCare.PetOwnerService.CreatePetOwnerCommandFromResourceAssembler
+  rectangle "==UpdatePetOwnerCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → UpdateCommand" <<PawfectCare.PetOwnerService.UpdatePetOwnerCommandFromResourceAssembler>> as PawfectCare.PetOwnerService.UpdatePetOwnerCommandFromResourceAssembler
+}
+
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.PetService : "<color:#707070>Uses"
+PawfectCare.PetOwnerService.PetOwnersController .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.PetOwnerService.PetOwnersController .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerCommandService : "<color:#707070>implements"
+PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerQueryService : "<color:#707070>implements"
+PawfectCare.PetOwnerService.PetOwnerCommandServiceImpl .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerRepository : "<color:#707070>persists data to"
+PawfectCare.PetOwnerService.PetOwnerQueryServiceImpl .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerRepository : "<color:#707070>queries data from"
+PawfectCare.PetOwnerService.PetOwnersController .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnerResourceFromEntityAssembler : "<color:#707070>uses"
+PawfectCare.PetOwnerService.PetOwnersController .[#707070,thickness=2].> PawfectCare.PetOwnerService.CreatePetOwnerCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.PetOwnerService.PetOwnersController .[#707070,thickness=2].> PawfectCare.PetOwnerService.UpdatePetOwnerCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnersController : "<color:#707070>discovers"
+PawfectCare.PetService .[#707070,thickness=2].> PawfectCare.PetOwnerService.PetOwnersController : "<color:#707070>calls for information"
+PawfectCare.PetOwnerService.PetOwnerRepository .[#707070,thickness=2].> PawfectCare.PetOwnerDB : "<color:#707070>reads from and writes to"
+@enduml

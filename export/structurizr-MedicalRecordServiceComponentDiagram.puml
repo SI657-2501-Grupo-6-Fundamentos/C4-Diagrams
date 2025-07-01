@@ -1,0 +1,185 @@
+@startuml
+set separator none
+title Pawfect Care - Medical Record Service - Components
+
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam rectangle<<PawfectCare.AppointmentService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.CreateMedicalRecordCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.DiagnosticService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.ExternalDiagnostic>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.ExternalMedicalAppointment>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.MedicalRecordDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordResourceFromEntityAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.MedicalRecordsController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.RestTemplateConfig>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService.UpdateMedicalRecordCommandFromResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService>> {
+  BorderColor #177b2c
+  FontColor #177b2c
+  shadowing false
+}
+
+rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+database "==Medical Record DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for medical records" <<PawfectCare.MedicalRecordDB>> as PawfectCare.MedicalRecordDB
+rectangle "==Appointment Service\n<size:10>[Container: Spring Boot]</size>\n\nManages scheduling and tracking of appointments" <<PawfectCare.AppointmentService>> as PawfectCare.AppointmentService
+rectangle "==Diagnostic Service\n<size:10>[Container: Spring Boot]</size>\n\nManages diagnoses and prescriptions" <<PawfectCare.DiagnosticService>> as PawfectCare.DiagnosticService
+
+rectangle "Medical Record Service\n<size:10>[Container: Spring Boot]</size>" <<PawfectCare.MedicalRecordService>> {
+  rectangle "==MedicalRecordsController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for medical records" <<PawfectCare.MedicalRecordService.MedicalRecordsController>> as PawfectCare.MedicalRecordService.MedicalRecordsController
+  rectangle "==DiagnosticsMedicalRecordController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for diagnostics‑specific records" <<PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController>> as PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController
+  rectangle "==MedicalRecordCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements MedicalRecordCommandService" <<PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl>> as PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl
+  rectangle "==MedicalRecordQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements MedicalRecordQueryService" <<PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl>> as PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl
+  rectangle "==MedicalRecordCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines command operations" <<PawfectCare.MedicalRecordService.MedicalRecordCommandService>> as PawfectCare.MedicalRecordService.MedicalRecordCommandService
+  rectangle "==MedicalRecordQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines query operations" <<PawfectCare.MedicalRecordService.MedicalRecordQueryService>> as PawfectCare.MedicalRecordService.MedicalRecordQueryService
+  rectangle "==MedicalRecordRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves MedicalRecord entities" <<PawfectCare.MedicalRecordService.MedicalRecordRepository>> as PawfectCare.MedicalRecordService.MedicalRecordRepository
+  rectangle "==ExternalDiagnostic\n<size:10>[Component: Spring Boot]</size>\n\nAdapter for Diagnostic Service existence checks" <<PawfectCare.MedicalRecordService.ExternalDiagnostic>> as PawfectCare.MedicalRecordService.ExternalDiagnostic
+  rectangle "==ExternalMedicalAppointment\n<size:10>[Component: Spring Boot]</size>\n\nAdapter for Appointment Service existence checks" <<PawfectCare.MedicalRecordService.ExternalMedicalAppointment>> as PawfectCare.MedicalRecordService.ExternalMedicalAppointment
+  rectangle "==RestTemplateConfig\n<size:10>[Component: Spring Boot]</size>\n\nConfigures RestTemplate for external calls" <<PawfectCare.MedicalRecordService.RestTemplateConfig>> as PawfectCare.MedicalRecordService.RestTemplateConfig
+  rectangle "==MedicalRecordResourceFromEntityAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts Entity → DTO" <<PawfectCare.MedicalRecordService.MedicalRecordResourceFromEntityAssembler>> as PawfectCare.MedicalRecordService.MedicalRecordResourceFromEntityAssembler
+  rectangle "==CreateMedicalRecordCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → CreateCommand" <<PawfectCare.MedicalRecordService.CreateMedicalRecordCommandFromResourceAssembler>> as PawfectCare.MedicalRecordService.CreateMedicalRecordCommandFromResourceAssembler
+  rectangle "==UpdateMedicalRecordCommandFromResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → UpdateCommand" <<PawfectCare.MedicalRecordService.UpdateMedicalRecordCommandFromResourceAssembler>> as PawfectCare.MedicalRecordService.UpdateMedicalRecordCommandFromResourceAssembler
+}
+
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.DiagnosticService : "<color:#707070>Uses"
+PawfectCare.MedicalRecordService.MedicalRecordsController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.MedicalRecordService.MedicalRecordsController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordCommandService : "<color:#707070>implements"
+PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordQueryService : "<color:#707070>implements"
+PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordRepository : "<color:#707070>persists data to"
+PawfectCare.MedicalRecordService.MedicalRecordQueryServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordRepository : "<color:#707070>queries data from"
+PawfectCare.MedicalRecordService.MedicalRecordsController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordResourceFromEntityAssembler : "<color:#707070>uses"
+PawfectCare.MedicalRecordService.MedicalRecordsController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.CreateMedicalRecordCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.MedicalRecordService.MedicalRecordsController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.UpdateMedicalRecordCommandFromResourceAssembler : "<color:#707070>uses"
+PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordResourceFromEntityAssembler : "<color:#707070>uses"
+PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.ExternalDiagnostic : "<color:#707070>verifies existence"
+PawfectCare.MedicalRecordService.MedicalRecordCommandServiceImpl .[#707070,thickness=2].> PawfectCare.MedicalRecordService.ExternalMedicalAppointment : "<color:#707070>verifies existence"
+PawfectCare.MedicalRecordService.ExternalDiagnostic .[#707070,thickness=2].> PawfectCare.MedicalRecordService.RestTemplateConfig : "<color:#707070>uses"
+PawfectCare.MedicalRecordService.ExternalMedicalAppointment .[#707070,thickness=2].> PawfectCare.MedicalRecordService.RestTemplateConfig : "<color:#707070>uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.MedicalRecordService.MedicalRecordsController : "<color:#707070>discovers"
+PawfectCare.MedicalRecordService.MedicalRecordRepository .[#707070,thickness=2].> PawfectCare.MedicalRecordDB : "<color:#707070>reads from and writes to"
+PawfectCare.MedicalRecordService.ExternalDiagnostic .[#707070,thickness=2].> PawfectCare.DiagnosticService : "<color:#707070>calls for information"
+PawfectCare.MedicalRecordService.ExternalMedicalAppointment .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>calls for information"
+PawfectCare.DiagnosticService .[#707070,thickness=2].> PawfectCare.MedicalRecordService.DiagnosticsMedicalRecordController : "<color:#707070>supplies diagnostic context"
+@enduml

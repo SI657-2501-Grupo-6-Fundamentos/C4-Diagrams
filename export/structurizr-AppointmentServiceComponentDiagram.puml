@@ -1,0 +1,267 @@
+@startuml
+set separator none
+title Pawfect Care - Appointment Service - Components
+
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam database<<PawfectCare.AppointmentDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.AppointmentResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.CreateAppointmentAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.CreateTariffAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.ExternalPet>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.ExternalVeterinarian>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.RestTemplateConfig>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.TariffResourceAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.UpdateAppointmentAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService.UpdateTariffAssembler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.VeterinaryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService>> {
+  BorderColor #177b2c
+  FontColor #177b2c
+  shadowing false
+}
+
+rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+rectangle "==Veterinary Service\n<size:10>[Container: Spring Boot]</size>\n\nHandles veterinarian profiles and availability" <<PawfectCare.VeterinaryService>> as PawfectCare.VeterinaryService
+rectangle "==Pet Service\n<size:10>[Container: Spring Boot]</size>\n\nStores and manages pet data (breed, age, etc.)" <<PawfectCare.PetService>> as PawfectCare.PetService
+rectangle "==Medical Record Service\n<size:10>[Container: Spring Boot]</size>\n\nStores and provides access to pet medical histories" <<PawfectCare.MedicalRecordService>> as PawfectCare.MedicalRecordService
+database "==Appointment DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for appointment service" <<PawfectCare.AppointmentDB>> as PawfectCare.AppointmentDB
+
+rectangle "Appointment Service\n<size:10>[Container: Spring Boot]</size>" <<PawfectCare.AppointmentService>> {
+  rectangle "==AppointmentCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements AppointmentCommandService" <<PawfectCare.AppointmentService.AppointmentCommandServiceImpl>> as PawfectCare.AppointmentService.AppointmentCommandServiceImpl
+  rectangle "==AppointmentQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements AppointmentQueryService" <<PawfectCare.AppointmentService.AppointmentQueryServiceImpl>> as PawfectCare.AppointmentService.AppointmentQueryServiceImpl
+  rectangle "==TariffCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements TariffCommandService" <<PawfectCare.AppointmentService.TariffCommandServiceImpl>> as PawfectCare.AppointmentService.TariffCommandServiceImpl
+  rectangle "==TariffQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements TariffQueryService" <<PawfectCare.AppointmentService.TariffQueryServiceImpl>> as PawfectCare.AppointmentService.TariffQueryServiceImpl
+  rectangle "==AppointmentCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines appointment command operations" <<PawfectCare.AppointmentService.AppointmentCommandService>> as PawfectCare.AppointmentService.AppointmentCommandService
+  rectangle "==AppointmentQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines appointment query operations" <<PawfectCare.AppointmentService.AppointmentQueryService>> as PawfectCare.AppointmentService.AppointmentQueryService
+  rectangle "==TariffCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines tariff command operations" <<PawfectCare.AppointmentService.TariffCommandService>> as PawfectCare.AppointmentService.TariffCommandService
+  rectangle "==TariffQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines tariff query operations" <<PawfectCare.AppointmentService.TariffQueryService>> as PawfectCare.AppointmentService.TariffQueryService
+  rectangle "==AppointmentRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves Appointment aggregates" <<PawfectCare.AppointmentService.AppointmentRepository>> as PawfectCare.AppointmentService.AppointmentRepository
+  rectangle "==TariffRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves Tariff aggregates" <<PawfectCare.AppointmentService.TariffRepository>> as PawfectCare.AppointmentService.TariffRepository
+  rectangle "==ExternalPet\n<size:10>[Component: Spring Boot]</size>\n\nAdapter for Pet Service existence checks" <<PawfectCare.AppointmentService.ExternalPet>> as PawfectCare.AppointmentService.ExternalPet
+  rectangle "==ExternalVeterinarian\n<size:10>[Component: Spring Boot]</size>\n\nAdapter for Veterinary Service availability checks" <<PawfectCare.AppointmentService.ExternalVeterinarian>> as PawfectCare.AppointmentService.ExternalVeterinarian
+  rectangle "==RestTemplateConfig\n<size:10>[Component: Spring Boot]</size>\n\nConfigures RestTemplate for external calls" <<PawfectCare.AppointmentService.RestTemplateConfig>> as PawfectCare.AppointmentService.RestTemplateConfig
+  rectangle "==AppointmentResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts Appointment entity → DTO" <<PawfectCare.AppointmentService.AppointmentResourceAssembler>> as PawfectCare.AppointmentService.AppointmentResourceAssembler
+  rectangle "==CreateAppointmentAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → CreateAppointmentCommand" <<PawfectCare.AppointmentService.CreateAppointmentAssembler>> as PawfectCare.AppointmentService.CreateAppointmentAssembler
+  rectangle "==UpdateAppointmentAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → UpdateAppointmentCommand" <<PawfectCare.AppointmentService.UpdateAppointmentAssembler>> as PawfectCare.AppointmentService.UpdateAppointmentAssembler
+  rectangle "==TariffResourceAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts Tariff entity → DTO" <<PawfectCare.AppointmentService.TariffResourceAssembler>> as PawfectCare.AppointmentService.TariffResourceAssembler
+  rectangle "==CreateTariffAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → CreateTariffCommand" <<PawfectCare.AppointmentService.CreateTariffAssembler>> as PawfectCare.AppointmentService.CreateTariffAssembler
+  rectangle "==UpdateTariffAssembler\n<size:10>[Component: Spring Boot]</size>\n\nConverts DTO → UpdateTariffCommand" <<PawfectCare.AppointmentService.UpdateTariffAssembler>> as PawfectCare.AppointmentService.UpdateTariffAssembler
+  rectangle "==AppointmentController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for appointments" <<PawfectCare.AppointmentService.AppointmentController>> as PawfectCare.AppointmentService.AppointmentController
+  rectangle "==TariffController\n<size:10>[Component: Spring Boot]</size>\n\nREST controller for tariffs" <<PawfectCare.AppointmentService.TariffController>> as PawfectCare.AppointmentService.TariffController
+}
+
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.PetService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.MedicalRecordService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.VeterinaryService : "<color:#707070>Uses"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.AppointmentService.TariffController .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AppointmentService.TariffController .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.AppointmentService.AppointmentCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentCommandService : "<color:#707070>implements"
+PawfectCare.AppointmentService.AppointmentQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentQueryService : "<color:#707070>implements"
+PawfectCare.AppointmentService.TariffCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffCommandService : "<color:#707070>implements"
+PawfectCare.AppointmentService.TariffQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffQueryService : "<color:#707070>implements"
+PawfectCare.AppointmentService.AppointmentCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentRepository : "<color:#707070>persists data to"
+PawfectCare.AppointmentService.AppointmentQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentRepository : "<color:#707070>queries data from"
+PawfectCare.AppointmentService.TariffCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffRepository : "<color:#707070>persists data to"
+PawfectCare.AppointmentService.TariffQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffRepository : "<color:#707070>queries data from"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentResourceAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.AppointmentService.CreateAppointmentAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.AppointmentService.UpdateAppointmentAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.TariffController .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffResourceAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.TariffController .[#707070,thickness=2].> PawfectCare.AppointmentService.CreateTariffAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.TariffController .[#707070,thickness=2].> PawfectCare.AppointmentService.UpdateTariffAssembler : "<color:#707070>uses"
+PawfectCare.AppointmentService.AppointmentCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.ExternalPet : "<color:#707070>verifies existence"
+PawfectCare.AppointmentService.AppointmentCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AppointmentService.ExternalVeterinarian : "<color:#707070>verifies availability"
+PawfectCare.AppointmentService.ExternalPet .[#707070,thickness=2].> PawfectCare.AppointmentService.RestTemplateConfig : "<color:#707070>uses"
+PawfectCare.AppointmentService.ExternalVeterinarian .[#707070,thickness=2].> PawfectCare.AppointmentService.RestTemplateConfig : "<color:#707070>uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AppointmentService.AppointmentController : "<color:#707070>discovers"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AppointmentService.TariffController : "<color:#707070>discovers"
+PawfectCare.AppointmentService.AppointmentRepository .[#707070,thickness=2].> PawfectCare.AppointmentDB : "<color:#707070>reads from and writes to"
+PawfectCare.AppointmentService.TariffRepository .[#707070,thickness=2].> PawfectCare.AppointmentDB : "<color:#707070>reads from and writes to"
+PawfectCare.AppointmentService.ExternalPet .[#707070,thickness=2].> PawfectCare.PetService : "<color:#707070>calls for information"
+PawfectCare.AppointmentService.ExternalVeterinarian .[#707070,thickness=2].> PawfectCare.VeterinaryService : "<color:#707070>calls for information"
+PawfectCare.AppointmentService.AppointmentController .[#707070,thickness=2].> PawfectCare.MedicalRecordService : "<color:#707070>creates medical records"
+@enduml

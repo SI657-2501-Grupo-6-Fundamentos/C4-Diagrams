@@ -1,0 +1,75 @@
+@startuml
+set separator none
+
+skinparam {
+  shadowing false
+  arrowFontSize 15
+  defaultTextAlignment center
+  wrapWidth 100
+  maxMessageSize 100
+}
+hide stereotype
+
+skinparam rectangle<<_transparent>> {
+  BorderColor transparent
+  BackgroundColor transparent
+  FontColor transparent
+}
+
+skinparam database<<1>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+}
+database "==Container, Database" <<1>>
+
+skinparam rectangle<<2>> {
+  BackgroundColor #e48927
+  FontColor #ffffff
+  BorderColor #9f5f1b
+  roundCorner 20
+}
+rectangle "==Container, Gateway" <<2>>
+
+skinparam rectangle<<3>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+}
+rectangle "==Container, MS" <<3>>
+
+skinparam rectangle<<4>> {
+  BackgroundColor #216ece
+  FontColor #ffffff
+  BorderColor #174d90
+}
+rectangle "==Container, WebPage" <<4>>
+
+skinparam person<<5>> {
+  BackgroundColor #39b56e
+  FontColor #ffffff
+  BorderColor #277e4d
+}
+person "==Person, Usuario" <<5>>
+
+skinparam person<<6>> {
+  BackgroundColor #7bb9e4
+  FontColor #ffffff
+  BorderColor #56819f
+}
+person "==Person, veterinario" <<6>>
+
+skinparam rectangle<<7>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+}
+rectangle "==Software System, External System" <<7>>
+
+rectangle "." <<_transparent>> as 8
+8 .[#707070,thickness=2].> 8 : "<color:#707070>Relationship"
+
+
+@enduml

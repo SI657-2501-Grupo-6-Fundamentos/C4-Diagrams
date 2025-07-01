@@ -1,0 +1,258 @@
+@startuml
+set separator none
+title Pawfect Care - Containers
+
+left to right direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam rectangle<<AIAgent>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.AccountDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.AppointmentDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AppointmentService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam person<<Clients>> {
+  BackgroundColor #39b56e
+  FontColor #ffffff
+  BorderColor #277e4d
+  shadowing false
+}
+skinparam database<<PawfectCare.DiagnosticDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.DiagnosticService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.GatewayService>> {
+  BackgroundColor #e48927
+  FontColor #ffffff
+  BorderColor #9f5f1b
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<GoogleOAuth2>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.LandingPage>> {
+  BackgroundColor #216ece
+  FontColor #ffffff
+  BorderColor #174d90
+  shadowing false
+}
+skinparam database<<PawfectCare.MedicalRecordDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.MedicalRecordService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.PetDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam database<<PawfectCare.PetOwnerDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetOwnerService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.PetService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.ReviewDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ReviewService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam database<<PawfectCare.ScheduleDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.ScheduleService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam person<<Veterinarians>> {
+  BackgroundColor #7bb9e4
+  FontColor #ffffff
+  BorderColor #56819f
+  shadowing false
+}
+skinparam database<<PawfectCare.VeterinaryDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.VeterinaryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.WebApplication>> {
+  BackgroundColor #216ece
+  FontColor #ffffff
+  BorderColor #174d90
+  shadowing false
+}
+skinparam rectangle<<PawfectCare>> {
+  BorderColor #0b4884
+  FontColor #0b4884
+  shadowing false
+}
+
+person "==Clients\n<size:10>[Person]</size>\n\nPet Owners interested in the well being of his pet" <<Clients>> as Clients
+person "==Veterinarians\n<size:10>[Person]</size>\n\nUsers specialized in veterinary medicine" <<Veterinarians>> as Veterinarians
+rectangle "==Google OAuth2\n<size:10>[Software System]</size>\n\nGmail API for authentication" <<GoogleOAuth2>> as GoogleOAuth2
+rectangle "==AI Agent\n<size:10>[Software System]</size>\n\nChat consultation service through an integrated chatbot" <<AIAgent>> as AIAgent
+
+rectangle "Pawfect Care\n<size:10>[Software System]</size>" <<PawfectCare>> {
+  rectangle "==Account Service\n<size:10>[Container: Spring Boot + JWT]</size>\n\nManages user authentication and registration" <<PawfectCare.AccountService>> as PawfectCare.AccountService
+  database "==Appointment DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for appointment service" <<PawfectCare.AppointmentDB>> as PawfectCare.AppointmentDB
+  rectangle "==Diagnostic Service\n<size:10>[Container: Spring Boot]</size>\n\nManages diagnoses and prescriptions" <<PawfectCare.DiagnosticService>> as PawfectCare.DiagnosticService
+  database "==Diagnostic DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for diagnostic service" <<PawfectCare.DiagnosticDB>> as PawfectCare.DiagnosticDB
+  rectangle "==Review Service\n<size:10>[Container: Spring Boot]</size>\n\nHandles reviews and ratings from clients" <<PawfectCare.ReviewService>> as PawfectCare.ReviewService
+  database "==Review DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for review service" <<PawfectCare.ReviewDB>> as PawfectCare.ReviewDB
+  database "==Account DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for account service" <<PawfectCare.AccountDB>> as PawfectCare.AccountDB
+  rectangle "==Veterinary Service\n<size:10>[Container: Spring Boot]</size>\n\nHandles veterinarian profiles and availability" <<PawfectCare.VeterinaryService>> as PawfectCare.VeterinaryService
+  database "==Veterinary DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for veterinary service" <<PawfectCare.VeterinaryDB>> as PawfectCare.VeterinaryDB
+  rectangle "==Schedule Service\n<size:10>[Container: Spring Boot]</size>\n\nTracks veterinarian schedules and availability slots" <<PawfectCare.ScheduleService>> as PawfectCare.ScheduleService
+  database "==Schedule DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for schedule service" <<PawfectCare.ScheduleDB>> as PawfectCare.ScheduleDB
+  rectangle "==Pet Owner Service\n<size:10>[Container: Spring Boot]</size>\n\nManages pet owner profile, details and preferences" <<PawfectCare.PetOwnerService>> as PawfectCare.PetOwnerService
+  rectangle "==Landing Page\n<size:10>[Container]</size>\n\nWebsite that provides a first contact and benefits of the business" <<PawfectCare.LandingPage>> as PawfectCare.LandingPage
+  database "==Pet Owner DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for pet owner service" <<PawfectCare.PetOwnerDB>> as PawfectCare.PetOwnerDB
+  rectangle "==Pet Service\n<size:10>[Container: Spring Boot]</size>\n\nStores and manages pet data (breed, age, etc.)" <<PawfectCare.PetService>> as PawfectCare.PetService
+  rectangle "==Web Application\n<size:10>[Container: HTML, TS, CSS, Angular]</size>\n\nFrontend" <<PawfectCare.WebApplication>> as PawfectCare.WebApplication
+  rectangle "==Gateway Service\n<size:10>[Container: Spring Cloud Gateway]</size>\n\nProvides a simple yet powerful way to route to APIs" <<PawfectCare.GatewayService>> as PawfectCare.GatewayService
+  database "==Pet DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for pet service" <<PawfectCare.PetDB>> as PawfectCare.PetDB
+  rectangle "==Medical Record Service\n<size:10>[Container: Spring Boot]</size>\n\nStores and provides access to pet medical histories" <<PawfectCare.MedicalRecordService>> as PawfectCare.MedicalRecordService
+  rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+  database "==Medical Record DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for medical records" <<PawfectCare.MedicalRecordDB>> as PawfectCare.MedicalRecordDB
+  rectangle "==Appointment Service\n<size:10>[Container: Spring Boot]</size>\n\nManages scheduling and tracking of appointments" <<PawfectCare.AppointmentService>> as PawfectCare.AppointmentService
+}
+
+Clients .[#707070,thickness=2].> PawfectCare.LandingPage : "<color:#707070>Visits"
+Veterinarians .[#707070,thickness=2].> PawfectCare.LandingPage : "<color:#707070>Visits"
+PawfectCare.LandingPage .[#707070,thickness=2].> PawfectCare.WebApplication : "<color:#707070>Redirects to"
+PawfectCare.WebApplication .[#707070,thickness=2].> PawfectCare.GatewayService : "<color:#707070>Uses"
+PawfectCare.WebApplication .[#707070,thickness=2].> AIAgent : "<color:#707070>Uses"
+PawfectCare.AccountService .[#707070,thickness=2].> GoogleOAuth2 : "<color:#707070>Uses"
+PawfectCare.GatewayService .[#707070,thickness=2].> PawfectCare.RegistryService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AccountService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.ReviewService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.PetService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.MedicalRecordService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.DiagnosticService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.VeterinaryService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.ScheduleService : "<color:#707070>Uses"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.PetOwnerService : "<color:#707070>Uses"
+PawfectCare.AccountService .[#707070,thickness=2].> PawfectCare.AccountDB : "<color:#707070>Reads from and writes to"
+PawfectCare.AppointmentService .[#707070,thickness=2].> PawfectCare.AppointmentDB : "<color:#707070>Reads from and writes to"
+PawfectCare.ReviewService .[#707070,thickness=2].> PawfectCare.ReviewDB : "<color:#707070>Reads from and writes to"
+PawfectCare.PetService .[#707070,thickness=2].> PawfectCare.PetDB : "<color:#707070>Reads from and writes to"
+PawfectCare.MedicalRecordService .[#707070,thickness=2].> PawfectCare.MedicalRecordDB : "<color:#707070>Reads from and writes to"
+PawfectCare.DiagnosticService .[#707070,thickness=2].> PawfectCare.DiagnosticDB : "<color:#707070>Reads from and writes to"
+PawfectCare.VeterinaryService .[#707070,thickness=2].> PawfectCare.VeterinaryDB : "<color:#707070>Reads from and writes to"
+PawfectCare.ScheduleService .[#707070,thickness=2].> PawfectCare.ScheduleDB : "<color:#707070>Reads from and writes to"
+PawfectCare.PetOwnerService .[#707070,thickness=2].> PawfectCare.PetOwnerDB : "<color:#707070>Reads from and writes to"
+PawfectCare.PetService .[#707070,thickness=2].> PawfectCare.PetOwnerService : "<color:#707070>Calls"
+PawfectCare.ScheduleService .[#707070,thickness=2].> PawfectCare.VeterinaryService : "<color:#707070>Calls"
+PawfectCare.AppointmentService .[#707070,thickness=2].> PawfectCare.PetService : "<color:#707070>Calls"
+PawfectCare.AppointmentService .[#707070,thickness=2].> PawfectCare.VeterinaryService : "<color:#707070>Calls"
+PawfectCare.AppointmentService .[#707070,thickness=2].> PawfectCare.ReviewService : "<color:#707070>Calls"
+PawfectCare.AppointmentService .[#707070,thickness=2].> PawfectCare.MedicalRecordService : "<color:#707070>Calls"
+PawfectCare.MedicalRecordService .[#707070,thickness=2].> PawfectCare.DiagnosticService : "<color:#707070>Calls"
+PawfectCare.MedicalRecordService .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>calls for information"
+PawfectCare.DiagnosticService .[#707070,thickness=2].> PawfectCare.MedicalRecordService : "<color:#707070>supplies diagnostic context"
+PawfectCare.ReviewService .[#707070,thickness=2].> PawfectCare.AppointmentService : "<color:#707070>calls for information"
+@enduml

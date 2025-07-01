@@ -1,0 +1,62 @@
+@startuml
+set separator none
+title Pawfect Care - System Context
+
+left to right direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam rectangle<<AIAgent>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+  shadowing false
+}
+skinparam person<<Clients>> {
+  BackgroundColor #39b56e
+  FontColor #ffffff
+  BorderColor #277e4d
+  shadowing false
+}
+skinparam rectangle<<GoogleOAuth2>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare>> {
+  BackgroundColor #1168bd
+  FontColor #ffffff
+  BorderColor #0b4884
+  roundCorner 20
+  shadowing false
+}
+skinparam person<<Veterinarians>> {
+  BackgroundColor #7bb9e4
+  FontColor #ffffff
+  BorderColor #56819f
+  shadowing false
+}
+
+person "==Clients\n<size:10>[Person]</size>\n\nPet Owners interested in the well being of his pet" <<Clients>> as Clients
+person "==Veterinarians\n<size:10>[Person]</size>\n\nUsers specialized in veterinary medicine" <<Veterinarians>> as Veterinarians
+rectangle "==Google OAuth2\n<size:10>[Software System]</size>\n\nGmail API for authentication" <<GoogleOAuth2>> as GoogleOAuth2
+rectangle "==AI Agent\n<size:10>[Software System]</size>\n\nChat consultation service through an integrated chatbot" <<AIAgent>> as AIAgent
+rectangle "==Pawfect Care\n<size:10>[Software System]</size>\n\nManages appointments, connects veterinarians, and provides access to a pet's medical history." <<PawfectCare>> as PawfectCare
+
+Clients .[#707070,thickness=2].> PawfectCare : "<color:#707070>Uses"
+Veterinarians .[#707070,thickness=2].> PawfectCare : "<color:#707070>Uses"
+PawfectCare .[#707070,thickness=2].> GoogleOAuth2 : "<color:#707070>Uses"
+PawfectCare .[#707070,thickness=2].> AIAgent : "<color:#707070>Uses"
+@enduml

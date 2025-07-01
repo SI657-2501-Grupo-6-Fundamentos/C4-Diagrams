@@ -1,0 +1,230 @@
+@startuml
+set separator none
+title Pawfect Care - Account Service - Components
+
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+
+skinparam {
+  arrowFontSize 10
+  defaultTextAlignment center
+  wrapWidth 200
+  maxMessageSize 100
+}
+
+hide stereotype
+
+skinparam database<<PawfectCare.AccountDB>> {
+  BackgroundColor #f5da55
+  FontColor #000000
+  BorderColor #ab983b
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.ApplicationReadyEventHandler>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.AuthenticationController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.BCryptPasswordEncoder>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<GoogleOAuth2>> {
+  BackgroundColor #7b7b7b
+  FontColor #ffffff
+  BorderColor #565656
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.GoogleAuthenticationController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.GoogleOAuthClient>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.JwtProvider>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.RegistryService>> {
+  BackgroundColor #22b140
+  FontColor #ffffff
+  BorderColor #177b2c
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RoleCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RoleCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RoleQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RoleQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RoleRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.RolesController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.SecurityConfig>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UserAdminCommandService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UserAdminCommandServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UserAdminQueryService>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UserAdminQueryServiceImpl>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UserAdminRepository>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService.UsersAdminController>> {
+  BackgroundColor #85bbf0
+  FontColor #000000
+  BorderColor #5d82a8
+  roundCorner 20
+  shadowing false
+}
+skinparam rectangle<<PawfectCare.AccountService>> {
+  BorderColor #177b2c
+  FontColor #177b2c
+  shadowing false
+}
+
+rectangle "==Google OAuth2\n<size:10>[Software System]</size>\n\nGmail API for authentication" <<GoogleOAuth2>> as GoogleOAuth2
+rectangle "==Registry Service\n<size:10>[Container: Netflix Eureka, Spring Cloud]</size>\n\nService registry for microservice discovery" <<PawfectCare.RegistryService>> as PawfectCare.RegistryService
+database "==Account DB\n<size:10>[Container: PostgreSQL]</size>\n\nPostgreSQL database for account service" <<PawfectCare.AccountDB>> as PawfectCare.AccountDB
+
+rectangle "Account Service\n<size:10>[Container: Spring Boot + JWT]</size>" <<PawfectCare.AccountService>> {
+  rectangle "==AuthenticationController\n<size:10>[Component: Spring Boot]</size>\n\nHandles sign‑in and sign‑up requests" <<PawfectCare.AccountService.AuthenticationController>> as PawfectCare.AccountService.AuthenticationController
+  rectangle "==GoogleAuthenticationController\n<size:10>[Component: Spring Boot]</size>\n\nHandles OAuth2 sign‑in with Google" <<PawfectCare.AccountService.GoogleAuthenticationController>> as PawfectCare.AccountService.GoogleAuthenticationController
+  rectangle "==RolesController\n<size:10>[Component: Spring Boot]</size>\n\nManages role creation and lookup" <<PawfectCare.AccountService.RolesController>> as PawfectCare.AccountService.RolesController
+  rectangle "==UsersAdminController\n<size:10>[Component: Spring Boot]</size>\n\nManages administrative user accounts" <<PawfectCare.AccountService.UsersAdminController>> as PawfectCare.AccountService.UsersAdminController
+  rectangle "==RoleCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements RoleCommandService" <<PawfectCare.AccountService.RoleCommandServiceImpl>> as PawfectCare.AccountService.RoleCommandServiceImpl
+  rectangle "==UserAdminCommandServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements UserAdminCommandService" <<PawfectCare.AccountService.UserAdminCommandServiceImpl>> as PawfectCare.AccountService.UserAdminCommandServiceImpl
+  rectangle "==RoleQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements RoleQueryService" <<PawfectCare.AccountService.RoleQueryServiceImpl>> as PawfectCare.AccountService.RoleQueryServiceImpl
+  rectangle "==UserAdminQueryServiceImpl\n<size:10>[Component: Spring Boot]</size>\n\nImplements UserAdminQueryService" <<PawfectCare.AccountService.UserAdminQueryServiceImpl>> as PawfectCare.AccountService.UserAdminQueryServiceImpl
+  rectangle "==ApplicationReadyEventHandler\n<size:10>[Component: Spring Boot]</size>\n\nInitializes default roles on startup" <<PawfectCare.AccountService.ApplicationReadyEventHandler>> as PawfectCare.AccountService.ApplicationReadyEventHandler
+  rectangle "==RoleCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines role command operations" <<PawfectCare.AccountService.RoleCommandService>> as PawfectCare.AccountService.RoleCommandService
+  rectangle "==UserAdminCommandService\n<size:10>[Component: Spring Boot]</size>\n\nDefines user‑admin command operations" <<PawfectCare.AccountService.UserAdminCommandService>> as PawfectCare.AccountService.UserAdminCommandService
+  rectangle "==RoleQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines role query operations" <<PawfectCare.AccountService.RoleQueryService>> as PawfectCare.AccountService.RoleQueryService
+  rectangle "==UserAdminQueryService\n<size:10>[Component: Spring Boot]</size>\n\nDefines user‑admin query operations" <<PawfectCare.AccountService.UserAdminQueryService>> as PawfectCare.AccountService.UserAdminQueryService
+  rectangle "==SecurityConfig\n<size:10>[Component: Spring Security Configuration]</size>\n\nConfigures authentication/authorization rules" <<PawfectCare.AccountService.SecurityConfig>> as PawfectCare.AccountService.SecurityConfig
+  rectangle "==BCryptPasswordEncoder\n<size:10>[Component: Spring Boot]</size>\n\nHashes and verifies user passwords" <<PawfectCare.AccountService.BCryptPasswordEncoder>> as PawfectCare.AccountService.BCryptPasswordEncoder
+  rectangle "==GoogleOAuthClient\n<size:10>[Component: Spring Boot]</size>\n\nHandles Google OAuth2 flows" <<PawfectCare.AccountService.GoogleOAuthClient>> as PawfectCare.AccountService.GoogleOAuthClient
+  rectangle "==JwtProvider\n<size:10>[Component: Spring Boot]</size>\n\nGenerates and validates JWT tokens" <<PawfectCare.AccountService.JwtProvider>> as PawfectCare.AccountService.JwtProvider
+  rectangle "==RoleRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves Role entities" <<PawfectCare.AccountService.RoleRepository>> as PawfectCare.AccountService.RoleRepository
+  rectangle "==UserAdminRepository\n<size:10>[Component: Spring Boot]</size>\n\nPersists and retrieves UserAdmin entities" <<PawfectCare.AccountService.UserAdminRepository>> as PawfectCare.AccountService.UserAdminRepository
+}
+
+PawfectCare.AccountService.AuthenticationController .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.AuthenticationController .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.GoogleAuthenticationController .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.RolesController .[#707070,thickness=2].> PawfectCare.AccountService.RoleCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.RolesController .[#707070,thickness=2].> PawfectCare.AccountService.RoleQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.UsersAdminController .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminCommandServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.UsersAdminController .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminQueryServiceImpl : "<color:#707070>invokes"
+PawfectCare.AccountService.RoleCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.RoleCommandService : "<color:#707070>implements"
+PawfectCare.AccountService.UserAdminCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminCommandService : "<color:#707070>implements"
+PawfectCare.AccountService.RoleQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.RoleQueryService : "<color:#707070>implements"
+PawfectCare.AccountService.UserAdminQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminQueryService : "<color:#707070>implements"
+PawfectCare.AccountService.ApplicationReadyEventHandler .[#707070,thickness=2].> PawfectCare.AccountService.RoleCommandServiceImpl : "<color:#707070>initializes default roles"
+PawfectCare.AccountService.UserAdminCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminRepository : "<color:#707070>persists data to"
+PawfectCare.AccountService.UserAdminQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.UserAdminRepository : "<color:#707070>queries data from"
+PawfectCare.AccountService.RoleCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.RoleRepository : "<color:#707070>persists data to"
+PawfectCare.AccountService.RoleQueryServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.RoleRepository : "<color:#707070>queries data from"
+PawfectCare.AccountService.UserAdminCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.BCryptPasswordEncoder : "<color:#707070>hashes passwords"
+PawfectCare.AccountService.UserAdminCommandServiceImpl .[#707070,thickness=2].> PawfectCare.AccountService.JwtProvider : "<color:#707070>generates tokens"
+PawfectCare.AccountService.AuthenticationController .[#707070,thickness=2].> PawfectCare.AccountService.JwtProvider : "<color:#707070>validates tokens"
+PawfectCare.AccountService.GoogleAuthenticationController .[#707070,thickness=2].> PawfectCare.AccountService.GoogleOAuthClient : "<color:#707070>uses"
+PawfectCare.AccountService.GoogleOAuthClient .[#707070,thickness=2].> GoogleOAuth2 : "<color:#707070>uses API of"
+PawfectCare.AccountService.RoleRepository .[#707070,thickness=2].> PawfectCare.AccountDB : "<color:#707070>reads from and writes to"
+PawfectCare.AccountService.UserAdminRepository .[#707070,thickness=2].> PawfectCare.AccountDB : "<color:#707070>reads from and writes to"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AccountService.AuthenticationController : "<color:#707070>discovers"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AccountService.GoogleAuthenticationController : "<color:#707070>discovers"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AccountService.RolesController : "<color:#707070>discovers"
+PawfectCare.RegistryService .[#707070,thickness=2].> PawfectCare.AccountService.UsersAdminController : "<color:#707070>discovers"
+@enduml
